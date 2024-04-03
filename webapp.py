@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template
+from flask import Flask, request, url_for, render_template
 from markupsafe import Markup
 
 import os
@@ -9,8 +9,18 @@ app = Flask(__name__) #__name__ = "__main__" if this is the file that was run.  
 @app.route('/p1')
 def page1():
     countrys = get_country_options()
+    country = request.args.get('country')
     #print(states)
     return render_template('page1.html', Country_options=countrys)
+
+@app.route('/countrys')
+def render_beans_selCountry():
+    country = request.args.get('country')
+    beans = get_beans_options(country)
+   
+    return render_template('page1.html', beans_options=beans)
+
+
 
 def get_country_options():
     """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
@@ -26,13 +36,17 @@ def get_country_options():
         options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
     
-def get_beans_options(countrys):
+def get_beans_options(country):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     beansList=[]
-    for c in countrys:
-        if c[""]
-    
+    for c in beans:
+        if c["Location"] ["Country"] == country:
+            beansList.append(c["Data"] ["Owner"])
+    options=""
+    for b in beansList:
+        options += Markup("<option value=\"" + b + "\">" + b + "</option>")
+    return options
 
 @app.route("/")
 def render_main():
