@@ -25,8 +25,10 @@ def render_beans_selCountry():
     
 @app.route('/showBeansBySelCountry')
 def render_bean_info():
-    country = request.args.get('country')
-    beans = get_beans_options(country)
+    selected_bean = request.args.get('beans')
+    beanInfo = get_bean_info(selected_bean)
+    
+    displayBeanInfo = "Aroma" + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
     return render_template('page1.html', beans_options=beans, highest_rated=displayHighestTotal, bean_info=get_bean_info())
 
 def get_country_options():
@@ -55,7 +57,7 @@ def get_beans_options(country):
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
     return options
     
-def get_highest_rated_beans(country) :
+def get_highest_rated_beans(country):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     ScoresList=[]
@@ -66,8 +68,36 @@ def get_highest_rated_beans(country) :
                 max = c["Data"] ["Scores"] ["Total"]
     return max
     
-def get_bean_info()
+def get_bean_info(selected_bean):
+    with open('coffee.json') as coffee_data:
+        data = json.load(coffee_data)
+   
+    Aroma = 0;
+    Flavor = 0;
+    Aftertaste = 0;
+    Acidity = 0;
+    Body = 0;
+    Balance = 0;
+    Uniformity = 0;
+    Sweetness = 0;
+    Moisture = 0;
+    Total = 0;
     
+    scores=[]
+
+   for d in data:
+        if d["Data"] ["Owner"] == selected_bean:
+            Aroma = d["Data"] ["Scores"] ["Aroma"]
+            Flavor = d["Data"] ["Scores"] ["Flavor"]
+            Aftertaste = d["Data"] ["Scores"] ["Aftertaste"]
+            Acidity = d["Data"] ["Scores"] ["Acidity"]
+            Body = d["Data"] ["Scores"] ["Body"]
+            Balance = d["Data"] ["Scores"] ["Balance"]
+            Uniformity = d["Data"] ["Scores"] ["Uniformity"]
+            Sweetness = d["Data"] ["Scores"] ["Sweetness"]
+            Moisture = d["Data"] ["Scores"] ["Moisture"]
+            Total = d["Data"] ["Scores"] ["Total"]
+    return Aroma,Flavor,Aftertaste,Acidity,Body,Balance,Uniformity,Sweetness,Moisture,Total;
 
 @app.route("/")
 def render_main():
