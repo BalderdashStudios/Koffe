@@ -28,8 +28,8 @@ def render_bean_info():
     selected_bean = request.args.get('beans')
     beanInfo = get_bean_info(selected_bean)
     
-    displayBeanInfo = "Aroma" + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
-    return render_template('page1.html', beans_options=beans, highest_rated=displayHighestTotal, bean_info=get_bean_info())
+    displayBeanInfo = "Aroma:" + str(beanInfo) + "."
+    return render_template('page1.html', bean_info=displayBeanInfo)
 
 def get_country_options():
     """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
@@ -85,7 +85,7 @@ def get_bean_info(selected_bean):
     
     scores=[]
 
-   for d in data:
+    for d in data:
         if d["Data"] ["Owner"] == selected_bean:
             Aroma = d["Data"] ["Scores"] ["Aroma"]
             Flavor = d["Data"] ["Scores"] ["Flavor"]
