@@ -17,10 +17,17 @@ def page1():
 def render_beans_selCountry():
     country = request.args.get('country')
     beans = get_beans_options(country)
-   
-    return render_template('page1.html', beans_options=beans)
-
-
+    highestTotal = get_highest_rated_beans(country)
+    
+    displayHighestTotal = "In " + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
+    
+    return render_template('page1.html', beans_options=beans, highest_rated=displayHighestTotal)
+    
+@app.route('/showBeansBySelCountry')
+def render_bean_info():
+    country = request.args.get('country')
+    beans = get_beans_options(country)
+    return render_template('page1.html', beans_options=beans, highest_rated=displayHighestTotal, bean_info=get_bean_info())
 
 def get_country_options():
     """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
@@ -47,6 +54,20 @@ def get_beans_options(country):
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
     return options
+    
+def get_highest_rated_beans(country) :
+    with open('coffee.json') as coffee_data:
+        beans = json.load(coffee_data)
+    ScoresList=[]
+    max = 0;
+    for c in beans:
+        if c["Location"] ["Country"] == country:
+            if c["Data"] ["Scores"] ["Total"] > max:
+                max = c["Data"] ["Scores"] ["Total"]
+    return max
+    
+def get_bean_info()
+    
 
 @app.route("/")
 def render_main():
