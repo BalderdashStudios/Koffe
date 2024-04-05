@@ -8,7 +8,7 @@ app = Flask(__name__) #__name__ = "__main__" if this is the file that was run.  
 
 @app.route('/p1')
 def page1():
-    countrys = get_country_options()
+    countrys = get_options("Location","Country")
     country = request.args.get('country')
     #print(states)
     return render_template('page1.html', Country_options=countrys)
@@ -29,21 +29,21 @@ def render_bean_info():
     beanInfo = get_bean_info(selected_bean)
     
     displayBeanInfo = "Aroma:" + str(beanInfo) + "."
-    return render_template('page1.html', bean_info=displayBeanInfo)
+    return render_template('page1.html', bean_info=beanInfo)
 
-def get_country_options():
+def get_options(first_level,second_level):
     """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
     with open('coffee.json') as coffee_data:
         countrys = json.load(coffee_data)
     countrysList=[] 
     for c in countrys:
-        if c["Location"] ["Country"] not in countrysList:
-            countrysList.append(c ["Location"]["Country"])
-    print(countrys)
+        if c[first_level] [second_level] not in countrysList:
+            countrysList.append(c [first_level][second_level])
     options=""
     for c in countrysList:
         options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
+    
     
 def get_beans_options(country):
     with open('coffee.json') as coffee_data:
@@ -51,7 +51,7 @@ def get_beans_options(country):
     beansList=[]
     for c in beans:
         if c["Location"] ["Country"] == country:
-            beansList.append(c["Data"] ["Owner"])
+            beansList.append(c["Data"] ["Owner"] + str(", Year made: ") + str(c["Year"]) + str(", Location: ") + c["Location"]["Region"] + str(", Species: ") + c["Data"]["Type"]["Species"]) 
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
@@ -60,7 +60,6 @@ def get_beans_options(country):
 def get_highest_rated_beans(country):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
-    ScoresList=[]
     max = 0;
     for c in beans:
         if c["Location"] ["Country"] == country:
@@ -71,33 +70,10 @@ def get_highest_rated_beans(country):
 def get_bean_info(selected_bean):
     with open('coffee.json') as coffee_data:
         data = json.load(coffee_data)
-   
-    Aroma = 0;
-    Flavor = 0;
-    Aftertaste = 0;
-    Acidity = 0;
-    Body = 0;
-    Balance = 0;
-    Uniformity = 0;
-    Sweetness = 0;
-    Moisture = 0;
-    Total = 0;
-    
-    scores=[]
-
     for d in data:
-        if d["Data"] ["Owner"] == selected_bean:
-            Aroma = d["Data"] ["Scores"] ["Aroma"]
-            Flavor = d["Data"] ["Scores"] ["Flavor"]
-            Aftertaste = d["Data"] ["Scores"] ["Aftertaste"]
-            Acidity = d["Data"] ["Scores"] ["Acidity"]
-            Body = d["Data"] ["Scores"] ["Body"]
-            Balance = d["Data"] ["Scores"] ["Balance"]
-            Uniformity = d["Data"] ["Scores"] ["Uniformity"]
-            Sweetness = d["Data"] ["Scores"] ["Sweetness"]
-            Moisture = d["Data"] ["Scores"] ["Moisture"]
-            Total = d["Data"] ["Scores"] ["Total"]
-    return Aroma,Flavor,Aftertaste,Acidity,Body,Balance,Uniformity,Sweetness,Moisture,Total;
+        if d["Data"] ["Owner"] + ["Year"] + ["Location"] ["Region"] + ["Data"]["Type"]["Species"]  == selected_bean:
+            return d["Data"]["Scores"]
+    return null;
 
 @app.route("/")
 def render_main():
