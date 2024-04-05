@@ -16,12 +16,21 @@ def page1():
 @app.route('/countrys')
 def render_beans_selCountry():
     country = request.args.get('country')
-    beans = get_beans_options(country)
+    yearInfo = get_beans_options_one_level("Year", country)
+    beans = get_beans_options("Data", "Owner",country)
     highestTotal = get_highest_rated_beans(country)
+    ownerInfo = get_options("Data", "Owner",)
+    regionInfo = get_beans_options("Location", "Region", country)
     
     displayHighestTotal = "In " + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
     
-    return render_template('page1.html', beans_options=beans, highest_rated=displayHighestTotal)
+    return render_template('page1.html', owners_options=ownerInfo, year_options=yearInfo, region_options=regionInfo ,highest_rated=displayHighestTotal)
+    
+@app.route('/showBeanOwners')
+def render_bean_owner():
+    ownerInfo = get_options("Data", "Owner",)
+    return render_template('page1.html', owners_options=ownerInfo)   
+    
     
 @app.route('/showBeansBySelCountry')
 def render_bean_info():
@@ -45,16 +54,28 @@ def get_options(first_level,second_level):
     return options
     
     
-def get_beans_options(country):
+def get_beans_options(first_level,second_level,country):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     beansList=[]
     for c in beans:
-        if c["Location"] ["Country"] == country:
-            beansList.append(c["Data"] ["Owner"] + str(", Year made: ") + str(c["Year"]) + str(", Location: ") + c["Location"]["Region"] + str(", Species: ") + c["Data"]["Type"]["Species"]) 
+        if c["Location"] ["Country"] == country and c[first_level] [second_level] not in beansList:
+            beansList.append(c[first_level] [second_level]) 
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
+    return options
+    
+def get_beans_options_one_level(first_level,country):
+    with open('coffee.json') as coffee_data:
+        beans = json.load(coffee_data)
+    beansList=[]
+    for c in beans:
+        if c["Location"] ["Country"] == country and c[first_level] not in beansList:
+            beansList.append(c[first_level]) 
+    options=""
+    for b in beansList:
+        options += Markup("<option value=\"" + str(b) + "\">" + str(b) + "</option>")
     return options
     
 def get_highest_rated_beans(country):
