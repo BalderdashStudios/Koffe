@@ -19,17 +19,20 @@ def render_beans_selCountry():
     yearInfo = get_beans_options_one_level("Year", country)
     beans = get_beans_options("Data", "Owner",country)
     highestTotal = get_highest_rated_beans(country)
-    ownerInfo = get_options("Data", "Owner",)
-    regionInfo = get_beans_options("Location", "Region", country)
+    ownerInfo = get_options("Data", "Owner")
     
     displayHighestTotal = "In " + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
     
-    return render_template('page1.html', owners_options=ownerInfo, year_options=yearInfo, region_options=regionInfo ,highest_rated=displayHighestTotal)
+    return render_template('page1.html', owners_options=ownerInfo,highest_rated=displayHighestTotal, selected_country=country)
     
 @app.route('/showBeanOwners')
 def render_bean_owner():
-    ownerInfo = get_options("Data", "Owner",)
-    return render_template('page1.html', owners_options=ownerInfo)   
+    country = request.args.get('selectedCountry')
+    owner = request.args.get('owners')
+    print(owner)
+    print(country)
+    regionInfo = get_regions_options("Location", "Region", country, owner)
+    return render_template('page1.html', region_options=regionInfo)   
     
     
 @app.route('/showBeansBySelCountry')
@@ -61,10 +64,30 @@ def get_beans_options(first_level,second_level,country):
     for c in beans:
         if c["Location"] ["Country"] == country and c[first_level] [second_level] not in beansList:
             beansList.append(c[first_level] [second_level]) 
+    print(beansList)
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
+    print(options)
     return options
+    
+def get_regions_options(first_level,second_level,country,owner):
+    with open('coffee.json') as coffee_data:
+        beans = json.load(coffee_data)
+    beansList=[]
+    for c in beans:
+        if c["Location"] ["Country"] == country and c["Data"] ["Owner"] == owner and c[first_level] [second_level] not in beansList:
+            beansList.append(c[first_level] [second_level]) 
+    print(beansList)
+    options=""
+    for b in beansList:
+        options += Markup("<option value=\"" + b + "\">" + b + "</option>")
+    print(options)
+    print(owner)
+    print(country)
+    return options
+    
+
     
 def get_beans_options_one_level(first_level,country):
     with open('coffee.json') as coffee_data:

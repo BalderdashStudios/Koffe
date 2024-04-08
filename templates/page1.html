@@ -25,26 +25,17 @@
 					<select name="owners">
 						{{ owners_options }}
 					</select>
-					<br><br>
-					<select name="years">
-						{{ year_options }}
-					</select>
-					<br><br>
-					<select name="regions">
-						{{ region_options }}
-					</select>
-					<br><br>
+					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
 					<input type="submit" value="Select Owner.">
 				</form>
 				
-				
-				
-				
-				
-				
-				
-				
-				
+				<h1> Regions </h1>
+				<form action="/showBeanRegions">
+					<select name="regions">
+						{{ region_options }}
+					</select>
+					<input type="submit" value="Select Region.">
+				</form>
 				
 				<form action="/showBeansBySelCountry ">
 				  <select name="beans"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
