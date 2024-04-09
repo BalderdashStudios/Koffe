@@ -34,7 +34,17 @@
 					<select name="regions">
 						{{ region_options }}
 					</select>
+					<input type="hidden" id="selectedOwner" name="selectedOwner" value="{{ selected_owner }}">
+					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
 					<input type="submit" value="Select Region.">
+				</form>
+				
+				<h1> Years </h1>
+				<form action="/showYearOptions">
+					<select name="years">
+						{{ year_options }}
+					</select>
+					<input type="submit" value="Select Year.">
 				</form>
 				
 				<form action="/showBeansBySelCountry ">

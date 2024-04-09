@@ -29,8 +29,18 @@ def render_beans_selCountry():
 def render_bean_owner():
     country = request.args.get('selectedCountry')
     owner = request.args.get('owners')
+    print(owner)
     regionInfo = get_regions_options("Location", "Region", country, owner)
-    return render_template('page1.html', region_options=regionInfo)   
+    return render_template('page1.html', region_options=regionInfo, selected_country=country, selected_owner=owner)
+
+@app.route('/showBeanRegions')
+def render_bean_region():
+    country = request.args.get('selectedCountry')
+    owner = request.args.get('selectedOwner')
+    print(owner)
+    region = request.args.get('regions')
+    yearInfo = get_years_options("Year",region, country, owner)
+    return render_template('page1.html', year_options=yearInfo)       
     
     
 @app.route('/showBeansBySelCountry')
@@ -97,7 +107,20 @@ def get_regions_options(first_level,second_level,country,owner):
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
     return options
     
-
+def get_years_options(first_level,region, country, owner):
+    with open('coffee.json') as coffee_data:
+        beans = json.load(coffee_data)
+    beansList=[]
+    print(region)
+    print(country)
+    print(owner)
+    for c in beans:
+        if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c[first_level] not in beansList:
+            beansList.append(c[first_level]) 
+    options=""
+    for b in beansList:
+        options += Markup("<option value=\"" + str(b) + "\">" + str(b) + "</option>")
+    return options
     
 def get_beans_options_one_level(first_level,country):
     with open('coffee.json') as coffee_data:
