@@ -8,7 +8,7 @@ app = Flask(__name__) #__name__ = "__main__" if this is the file that was run.  
 
 @app.route('/p1')
 def page1():
-    countrys = get_options("Location","Country")
+    countrys = get_countrys("Location","Country")
     country = request.args.get('country')
     #print(states)
     return render_template('page1.html', Country_options=countrys)
@@ -19,7 +19,7 @@ def render_beans_selCountry():
     yearInfo = get_beans_options_one_level("Year", country)
     beans = get_beans_options("Data", "Owner",country)
     highestTotal = get_highest_rated_beans(country)
-    ownerInfo = get_options("Data", "Owner")
+    ownerInfo = get_owners("Data", "Owner", country)
     
     displayHighestTotal = "In " + country + ", the highest overall rated coffee bean is " + str(highestTotal) + "."
     
@@ -29,8 +29,6 @@ def render_beans_selCountry():
 def render_bean_owner():
     country = request.args.get('selectedCountry')
     owner = request.args.get('owners')
-    print(owner)
-    print(country)
     regionInfo = get_regions_options("Location", "Region", country, owner)
     return render_template('page1.html', region_options=regionInfo)   
     
@@ -43,7 +41,7 @@ def render_bean_info():
     displayBeanInfo = "Aroma:" + str(beanInfo) + "."
     return render_template('page1.html', bean_info=beanInfo)
 
-def get_options(first_level,second_level):
+def get_countrys(first_level,second_level):
     """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
     with open('coffee.json') as coffee_data:
         countrys = json.load(coffee_data)
@@ -51,8 +49,23 @@ def get_options(first_level,second_level):
     for c in countrys:
         if c[first_level] [second_level] not in countrysList:
             countrysList.append(c [first_level][second_level])
+    print(countrysList)
     options=""
     for c in countrysList:
+        options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
+    return options
+    
+def get_owners(first_level,second_level,country):
+    """Return the html code for the drop down menu.  Each option is a state abbreviation from the demographic data."""
+    with open('coffee.json') as coffee_data:
+        owners = json.load(coffee_data)
+    ownersList=[] 
+    for o in owners:
+        if o["Location"] ["Country"] == country and o[first_level] [second_level] not in ownersList:
+            ownersList.append(o [first_level][second_level])
+    print(ownersList)
+    options=""
+    for c in ownersList:
         options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
     
@@ -64,7 +77,6 @@ def get_beans_options(first_level,second_level,country):
     for c in beans:
         if c["Location"] ["Country"] == country and c[first_level] [second_level] not in beansList:
             beansList.append(c[first_level] [second_level]) 
-    print(beansList)
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
@@ -75,6 +87,7 @@ def get_regions_options(first_level,second_level,country,owner):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     beansList=[]
+    
     for c in beans:
         if c["Location"] ["Country"] == country and c["Data"] ["Owner"] == owner and c[first_level] [second_level] not in beansList:
             beansList.append(c[first_level] [second_level]) 
@@ -82,9 +95,6 @@ def get_regions_options(first_level,second_level,country,owner):
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
-    print(options)
-    print(owner)
-    print(country)
     return options
     
 
@@ -111,13 +121,13 @@ def get_highest_rated_beans(country):
                 max = c["Data"] ["Scores"] ["Total"]
     return max
     
-def get_bean_info(selected_bean):
+"""def get_bean_info(selected_bean):
     with open('coffee.json') as coffee_data:
         data = json.load(coffee_data)
     for d in data:
         if d["Data"] ["Owner"] + ["Year"] + ["Location"] ["Region"] + ["Data"]["Type"]["Species"]  == selected_bean:
             return d["Data"]["Scores"]
-    return null;
+    return null;"""
 
 @app.route("/")
 def render_main():
