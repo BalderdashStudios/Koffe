@@ -49,24 +49,30 @@ def render_bean_years():
     region = request.args.get('selectedRegion')
     year = int(request.args.get('years'))
     
+    
     speciesInfo = get_species_options("Data", "Type", "Species", country, region, owner, year)
-    return render_template('page1.html', species_options=speciesInfo)      
+    return render_template('page1.html', species_options=speciesInfo, selected_owner=owner, selected_country=country, selected_region=region,  selected_year=year)
+
+@app.route('/showSpeciesOptions')
+def render_bean_species():
+    country = request.args.get('selectedCountry')
+    owner = request.args.get('selectedOwner')
+    region = request.args.get('selectedRegion')
+    year = int(request.args.get('selectedYear'))
+    species = request.args.get('species')
+    
+    totalScore = get_bean_score(species, country, region, owner, year)
+    
+    return render_template('page1.html', bean_species_name=species, bean_country=country, bean_total=totalScore)          
     
 def get_species_options(data, type, species, country, region, owner, year):  
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     beansList=[]
-    print(region)
-    print(country)
-    print(owner)
-    print(year)
-    print(data)
-    print(type)
     for c in beans:
         if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c["Year"] == year and c[data] [type] [species] not in beansList:
             beansList.append(c[data][type][species]) 
     options=""
-    print(beansList)
     for b in beansList:
         options += Markup("<option value=\"" + str(b) + "\">" + str(b) + "</option>")
     return options
@@ -171,13 +177,20 @@ def get_highest_rated_beans(country):
                 max = c["Data"] ["Scores"] ["Total"]
     return max
     
-"""def get_bean_info(selected_bean):
+def get_bean_score(species, country, region, owner, year):
     with open('coffee.json') as coffee_data:
         data = json.load(coffee_data)
-    for d in data:
-        if d["Data"] ["Owner"] + ["Year"] + ["Location"] ["Region"] + ["Data"]["Type"]["Species"]  == selected_bean:
-            return d["Data"]["Scores"]
-    return null;"""
+    score = "0";
+    print(species)
+    print(region)
+    print(owner)
+    print(year)
+    print(country)
+    for c in data:
+        if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c["Year"] == year and c["Data"] ["Type"] ["Species"] == species:
+             score = c["Data"]["Scores"]
+             print(score)
+    return score
 
 @app.route("/")
 def render_main():
@@ -192,4 +205,4 @@ def render_page3():
     return render_template('page3.html')
     
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)

@@ -55,26 +55,39 @@
 					<select name="species">
 						{{ species_options }}
 					</select>
+					<input type="hidden" id="selectedOwner" name="selectedOwner" value="{{ selected_owner }}">
+					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
+					<input type="hidden" id="selectedRegion" name="selectedRegion" value="{{ selected_region }}">
+					<input type="hidden" id="selectedYear" name="selectedYear" value="{{ selected_year }}">
 					<input type="submit" value="Select Species.">
 				</form>
-				
-				<form action="/showBeansBySelCountry ">
-				  <select name="beans"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
-					{{ beans_options }}
-				  </select>
-				  <br><br>
-				  <input type="submit" value="Select Bean.">
-				</form>
-						
-						
-				 <div id="selectedBeanInfo">
-					<p>{{ bean_info }}</p>
-				</div>
 				
 				 <div id="highestRatedBean">
 					<p>{{ highest_rated }}</p>
 				</div>
 			</div>
 		</div>
+		{% if bean_total %}
+			<div class="row p-5">
+				<div class="card">
+					<div class="card-header">{{ bean_species_name }}</div>
+					<div class="card-body">
+						<ul> 
+							<li>Aroma={{bean_total.Aroma}}</li>
+							<li>Flavor={{bean_total.Flavor}}</li>
+							<li>Aftertaste={{bean_total.Aftertaste}}</li>
+							<li>Acidity={{bean_total.Acidity}}</li>
+							<li>Body={{bean_total.Body}}</li>
+							<li>Balance={{bean_total.Balance}}</li>
+							<li>Uniformity={{bean_total.Uniformity}}</li>
+							<li>Sweetness={{bean_total.Sweetness}}</li>
+							<li>Moisture={{bean_total.Moisture}}</li>
+							<li>Total={{bean_total.Total}}</li>
+						</ul>
+					</div>
+					<div class="card-footer">{{ bean_country }}</div>
+				</div>
+			</div>
+		{%endif%}
 	</div>
 {% endblock %}
