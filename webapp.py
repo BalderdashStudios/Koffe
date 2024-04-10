@@ -40,9 +40,40 @@ def render_bean_region():
     print(owner)
     region = request.args.get('regions')
     yearInfo = get_years_options("Year",region, country, owner)
-    return render_template('page1.html', year_options=yearInfo)       
+    return render_template('page1.html', year_options=yearInfo, selected_country=country, selected_owner=owner, selected_region=region)  
+
+@app.route('/showYearOptions')
+def render_bean_years():
+    country = request.args.get('selectedCountry')
+    owner = request.args.get('selectedOwner')
+    region = request.args.get('selectedRegion')
+    year = int(request.args.get('years'))
     
+    speciesInfo = get_species_options("Data", "Type", "Species", country, region, owner, year)
+    return render_template('page1.html', species_options=speciesInfo)      
     
+def get_species_options(data, type, species, country, region, owner, year):  
+    with open('coffee.json') as coffee_data:
+        beans = json.load(coffee_data)
+    beansList=[]
+    print(region)
+    print(country)
+    print(owner)
+    print(year)
+    print(data)
+    print(type)
+    for c in beans:
+        if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c["Year"] == year and c[data] [type] [species] not in beansList:
+            beansList.append(c[data][type][species]) 
+    options=""
+    print(beansList)
+    for b in beansList:
+        options += Markup("<option value=\"" + str(b) + "\">" + str(b) + "</option>")
+    return options
+
+
+
+   
 @app.route('/showBeansBySelCountry')
 def render_bean_info():
     selected_bean = request.args.get('beans')
@@ -73,7 +104,6 @@ def get_owners(first_level,second_level,country):
     for o in owners:
         if o["Location"] ["Country"] == country and o[first_level] [second_level] not in ownersList:
             ownersList.append(o [first_level][second_level])
-    print(ownersList)
     options=""
     for c in ownersList:
         options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
@@ -111,9 +141,6 @@ def get_years_options(first_level,region, country, owner):
     with open('coffee.json') as coffee_data:
         beans = json.load(coffee_data)
     beansList=[]
-    print(region)
-    print(country)
-    print(owner)
     for c in beans:
         if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c[first_level] not in beansList:
             beansList.append(c[first_level]) 

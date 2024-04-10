@@ -44,13 +44,16 @@
 					<select name="years">
 						{{ year_options }}
 					</select>
+					<input type="hidden" id="selectedOwner" name="selectedOwner" value="{{ selected_owner }}">
+					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
+					<input type="hidden" id="selectedRegion" name="selectedRegion" value="{{ selected_region }}">
 					<input type="submit" value="Select Year.">
 				</form>
 				
 				<h1> Species </h1>
 				<form action="/showSpeciesOptions">
 					<select name="species">
-						{{ dpecies_options }}
+						{{ species_options }}
 					</select>
 					<input type="submit" value="Select Species.">
 				</form>
