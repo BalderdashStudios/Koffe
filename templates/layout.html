@@ -18,7 +18,7 @@
      <!--nav bar-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">My Website</a>
+        <a class="navbar-brand" href="/">Koffe</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,13 +28,13 @@
               <a {% if active_page == "home" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a {% if active_page == "Show Bean By Country" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p1">Page 1</a>
+              <a {% if active_page == "page1" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p1">Data</a>
             </li>
             <li class="nav-item">
-              <a {% if active_page == "page2" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p2">Page 2</a>
+              <a {% if active_page == "page2" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p2">Recipes</a>
             </li>
 			  <li class="nav-item">
-              <a {% if active_page == "page3" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p3">Page 3</a>
+              <a {% if active_page == "page3" %} class="nav-link active"{% else %}class="nav-link"{% endif %} href="/p3">About</a>
             </li>
           </ul>
         </div>

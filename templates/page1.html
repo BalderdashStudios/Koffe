@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% set active_page = "p1" %}
+{% set active_page = "page1" %}
 
 {% block title %}Page1{% endblock %}
 
@@ -9,8 +9,8 @@
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col">
-				<h1>Page 1</h1>
-				
+				<h1>Search through the Dataset.</h1>
+				{% if Country_options %}
 				 <form action="/countrys">
 					  <select name="country"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
 						{{ Country_options }}
@@ -18,8 +18,10 @@
 					  <br><br>
 					  <input type="submit" value="Select Country.">
 				 </form>
+				{%endif%}
 			</div>
 			<div class="col">
+			{% if owners_options %}
 			 <h1> Coffee Bean Owners in that country: </h1>
 				<form action="/showBeanOwners">
 					<select name="owners">
@@ -28,7 +30,8 @@
 					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
 					<input type="submit" value="Select Owner.">
 				</form>
-				
+			{%endif%}	
+			{% if region_options %}	
 				<h1> Regions </h1>
 				<form action="/showBeanRegions">
 					<select name="regions">
@@ -38,7 +41,8 @@
 					<input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
 					<input type="submit" value="Select Region.">
 				</form>
-				
+			{%endif%}	
+			{% if year_options %}	
 				<h1> Years </h1>
 				<form action="/showYearOptions">
 					<select name="years">
@@ -49,7 +53,8 @@
 					<input type="hidden" id="selectedRegion" name="selectedRegion" value="{{ selected_region }}">
 					<input type="submit" value="Select Year.">
 				</form>
-				
+			{%endif%}	
+			{% if species_options %}
 				<h1> Species </h1>
 				<form action="/showSpeciesOptions">
 					<select name="species">
@@ -61,7 +66,7 @@
 					<input type="hidden" id="selectedYear" name="selectedYear" value="{{ selected_year }}">
 					<input type="submit" value="Select Species.">
 				</form>
-				
+			{%endif%}		
 				 <div id="highestRatedBean">
 					<p>{{ highest_rated }}</p>
 				</div>
@@ -72,6 +77,8 @@
 				<div class="card">
 					<div class="card-header">{{ bean_species_name }}</div>
 					<div class="card-body">
+						<h3>Scores for your selected bean:</h3>
+						
 						<ul> 
 							<li>Aroma={{bean_total.Aroma}}</li>
 							<li>Flavor={{bean_total.Flavor}}</li>
