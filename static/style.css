@@ -1,12 +1,30 @@
-#content {
-     margin-left: 20px;
-}
-
 body {
 	background-color: #231123;
 }
 
-#3DViewer {
+.3DViewer {
 	min-width: 100px;
 	max-width: 300px;
 }
+
+.centerText {
+	text-align: center;
+}
+
+.listItem {
+	border-radius: 5px;
+	background-color: #2C3220;
+	padding: 10px;
+	margin: 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.darkPurpleAccent{
+	background-color: #231123;
+}
+	

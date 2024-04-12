@@ -6,11 +6,14 @@
 
 {% block content %}
     <!--page content-->
-	
 	<div class="container mt-5">
 		<div class="row">
+			<h1 class="centerText">Search through the Dataset.</h1>
+		</div>
+	</div>
+	<div class="container mt-5 centerText">
+		<div class="row">
 			<div class="col">
-				<h1>Search through the Dataset.</h1>
 				{% if Country_options %}
 				 <form action="/countrys">
 					  <select name="country"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
@@ -20,8 +23,6 @@
 					  <input type="submit" value="Select Country.">
 				 </form>
 				{%endif%}
-			</div>
-			<div class="col">
 			{% if owners_options %}
 			 <h1> Coffee Bean Owners in that country: </h1>
 				<form action="/showBeanOwners">
@@ -75,26 +76,55 @@
 		</div>
 		{% if bean_total %}
 			<div class="row p-5">
-				<div class="card">
+				<div class="card darkPurpleAccent">
 					<div class="card-header">{{ bean_species_name }}</div>
 					<div class="3DViewer"> 
 						<script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.93/build/spline-viewer.js"></script>
-						<spline-viewer loading-anim-type="spinner-small-dark" url="https://prod.spline.design/oc4iWeBs8tidLmkg/scene.splinecode"></spline-viewer>
+						<spline-viewer loading-anim-type="spinner-big-light" url="https://prod.spline.design/oc4iWeBs8tidLmkg/scene.splinecode"></spline-viewer>
 					</div>
 					<div class="card-body">
 						<h3>Scores for your selected bean:</h3>
 						
 						<ul> 
-							<li>Aroma={{bean_total.Aroma}}</li>
-							<li>Flavor={{bean_total.Flavor}}</li>
-							<li>Aftertaste={{bean_total.Aftertaste}}</li>
-							<li>Acidity={{bean_total.Acidity}}</li>
-							<li>Body={{bean_total.Body}}</li>
-							<li>Balance={{bean_total.Balance}}</li>
-							<li>Uniformity={{bean_total.Uniformity}}</li>
-							<li>Sweetness={{bean_total.Sweetness}}</li>
-							<li>Moisture={{bean_total.Moisture}}</li>
-							<li>Total={{bean_total.Total}}</li>
+							<li class="listItem">
+								<h3>Aroma</h3> <h3>{{bean_total.Aroma}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Flavor</h3> <h3>{{bean_total.Flavor}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Aftertaste</h3> <h3>{{bean_total.Aftertaste}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Acidity</h3> <h3>{{bean_total.Acidity}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Body</h3> <h3>{{bean_total.Body}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Balance</h3> <h3>{{bean_total.Balance}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Uniformity</h3> <h3>{{bean_total.Uniformity}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Sweetness</h3> <h3>{{bean_total.Sweetness}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Moisture</h3> <h3>{{bean_total.Moisture}}</h3>
+							</li>
+							
+							<li class="listItem">
+								<h3>Total</h3> <h3>{{bean_total.Total}}</h3>
+							</li>
 						</ul>
 					</div>
 					<div class="card-footer">{{ bean_country }}</div>
