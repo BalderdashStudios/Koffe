@@ -5,3 +5,8 @@
 body {
 	background-color: #231123;
 }
+
+#3DViewer {
+	min-width: 100px;
+	max-width: 300px;
+}

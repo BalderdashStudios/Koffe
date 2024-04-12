@@ -6,6 +6,7 @@
 
 {% block content %}
     <!--page content-->
+	
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col">
@@ -76,6 +77,10 @@
 			<div class="row p-5">
 				<div class="card">
 					<div class="card-header">{{ bean_species_name }}</div>
+					<div class="3DViewer"> 
+						<script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.93/build/spline-viewer.js"></script>
+						<spline-viewer loading-anim-type="spinner-small-dark" url="https://prod.spline.design/oc4iWeBs8tidLmkg/scene.splinecode"></spline-viewer>
+					</div>
 					<div class="card-body">
 						<h3>Scores for your selected bean:</h3>
 						
