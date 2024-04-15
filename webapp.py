@@ -191,6 +191,30 @@ def get_bean_score(species, country, region, owner, year):
              score = c["Data"]["Scores"]
              print(score)
     return score
+    
+    
+def get_bean_scoreGraph(country):
+    with open('coffee.json') as coffee_data:
+        data = json.load(coffee_data)
+    beanAverageYear = {}
+    totalBeanYear = {}
+    for c in data:
+        if c["Location"] ["Country"] == country:
+            if c["Year"] in beanAverageYear:
+                beanAverageYear[c["Year"]] += c["Data"]["Scores"]["Total"]
+            else:
+                beanAverageYear[c["Year"]] = c["Data"]["Scores"]["Total"]
+    for c in data:
+        if c["Location"] ["Country"] == country:
+            if c["Year"] in totalBeanYear:
+                totalBeanYear[c["Year"]] += 1
+            else:
+                totalBeanYear[c["Year"]] = 1
+                
+    print(beanAverageYear)
+    print(totalBeanYear)
+    return beanAverageYear
+    
 
 @app.route("/")
 def render_main():
@@ -202,7 +226,17 @@ def render_page2():
     
 @app.route("/p3")
 def render_page3():
-    return render_template('page3.html')
+    countrys = get_countrys("Location","Country")
+    country = request.args.get('country')
+    #print(states)
+    return render_template('page3.html', Country_options=countrys)
     
+@app.route("/countrysGraph")
+def render_graph():
+    country = request.args.get('country')
+    scores = get_bean_scoreGraph(country)
+    return render_template('page3.html', Country_options=country)
+
+
 if __name__=="__main__":
     app.run(debug=True)
