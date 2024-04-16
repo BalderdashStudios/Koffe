@@ -96,7 +96,6 @@ def get_countrys(first_level,second_level):
     for c in countrys:
         if c[first_level] [second_level] not in countrysList:
             countrysList.append(c [first_level][second_level])
-    print(countrysList)
     options=""
     for c in countrysList:
         options += Markup("<option value=\"" + c + "\">" + c + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
@@ -126,7 +125,6 @@ def get_beans_options(first_level,second_level,country):
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
-    print(options)
     return options
     
 def get_regions_options(first_level,second_level,country,owner):
@@ -137,7 +135,6 @@ def get_regions_options(first_level,second_level,country,owner):
     for c in beans:
         if c["Location"] ["Country"] == country and c["Data"] ["Owner"] == owner and c[first_level] [second_level] not in beansList:
             beansList.append(c[first_level] [second_level]) 
-    print(beansList)
     options=""
     for b in beansList:
         options += Markup("<option value=\"" + b + "\">" + b + "</option>")
@@ -181,11 +178,6 @@ def get_bean_score(species, country, region, owner, year):
     with open('coffee.json') as coffee_data:
         data = json.load(coffee_data)
     score = "0";
-    print(species)
-    print(region)
-    print(owner)
-    print(year)
-    print(country)
     for c in data:
         if c["Location"] ["Country"] == country and c["Location"] ["Region"] == region and c["Data"] ["Owner"] == owner and c["Year"] == year and c["Data"] ["Type"] ["Species"] == species:
              score = c["Data"]["Scores"]
@@ -210,9 +202,9 @@ def get_bean_scoreGraph(country):
                 totalBeanYear[c["Year"]] += 1
             else:
                 totalBeanYear[c["Year"]] = 1
-                
-    print(beanAverageYear)
-    print(totalBeanYear)
+    #Code from Perplexity https://www.perplexity.ai/search/Please-add-to-p4S.9SmlQYWp_J1C6HIF0Q
+    for year, total_score in beanAverageYear.items():
+        beanAverageYear[year] = round(total_score / totalBeanYear[year], 2)  
     return beanAverageYear
     
 
@@ -234,8 +226,16 @@ def render_page3():
 @app.route("/countrysGraph")
 def render_graph():
     country = request.args.get('country')
-    scores = get_bean_scoreGraph(country)
-    return render_template('page3.html', Country_options=country)
+    return render_template('page3.html',points=format_dict_as_graph_points(get_bean_scoreGraph(country)))
+
+def format_dict_as_graph_points(scores):
+    graph_points = ""
+    for key in scores:
+        #{ y: 450, label: "Sweden" },
+        graph_points = graph_points + Markup('{ y: ' + str(scores[key]) + ', label: " ' + str(key) + '" }, ')
+    graph_points = graph_points[:-2]
+    print(graph_points)
+    return graph_points
 
 
 if __name__=="__main__":

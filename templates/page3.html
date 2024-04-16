@@ -10,24 +10,16 @@
 				animationEnabled: true,
 				theme: "light2",
 				title:{
-					text: "Simple Line Chart"
+					text: "Average Total Score"
+				},
+				axisY: {
+				includeZero: true
 				},
 				data: [{        
 					type: "line",
 					indexLabelFontSize: 16,
 					dataPoints: [
-						{ y: 450 },
-						{ y: 414},
-						{ y: 520, indexLabel: "\u2191 highest",markerColor: "red", markerType: "triangle" },
-						{ y: 460 },
-						{ y: 450 },
-						{ y: 500 },
-						{ y: 480 },
-						{ y: 480 },
-						{ y: 410 , indexLabel: "\u2193 lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-						{ y: 500 },
-						{ y: 480 },
-						{ y: 510 }
+						{{points}}
 					]
 				}]
 			});
@@ -42,8 +34,8 @@
 {% block content %}
 	<div class="container mt-5">
 		<div class="row">
+			{% if Country_options %}
 			<div class="col">
-				{% if Country_options %}
 					 <form action="/countrysGraph">
 						  <select name="country"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
 							{{ Country_options }}
@@ -51,12 +43,13 @@
 						  <br><br>
 						  <input type="submit" value="Select Country.">
 					 </form>
-					{%endif%}
 			</div>
+			{%else%}
 			<div class="col">
 				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 				<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 			</div>
+			{%endif%}
 		</div>
 	</div>
 {% endblock %}
