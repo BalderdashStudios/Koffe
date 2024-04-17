@@ -7,6 +7,12 @@ body {
 	max-width: 300px;
 }
 
+.image {
+	min-width: 100px;
+	max-width: 300px;
+	border-radius: 5px;
+}
+
 .centerText {
 	text-align: center;
 }
