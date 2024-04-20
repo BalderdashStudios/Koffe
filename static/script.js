@@ -1,7 +1,11 @@
-const pre = document.querySelector(".card3D");
+const card1 = document.querySelector("#card1");
+const card2 = document.querySelector("#card2");
+const card3 = document.querySelector("#card3");
 
 document.addEventListener("mousemove", (e) => {
-    rotateElement(e, pre);
+    rotateElement(e, card1);
+    rotateElement(e, card2);
+    rotateElement(e, card3);
 });
 
 function rotateElement(event, element) {
