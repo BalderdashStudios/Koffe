@@ -1,5 +1,18 @@
+@font-face {
+	font-family: sodoSans;
+	src: url(SoDoSans-SemiBold.ttf);
+}
+
 body {
-	background-color: #231123 ;
+	background-color: #231123;
+	background-image: radial-gradient(#231123, #000000);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	height: 100vh;
+
+	font-family: sodoSans;
 }
 
 .3DViewer {
