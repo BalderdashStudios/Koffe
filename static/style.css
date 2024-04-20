@@ -40,7 +40,15 @@ ul {
 }
 
 .card3D {
-  transform-style: preserve-3d;
-  transform: perspective(5000px) rotateY(var(--rotateX)) rotateX(var(--rotateY));
+	position: relative;
+	transform-style: preserve-3d;
+	transform: perspective(5000px) rotateY(var(--rotateX)) rotateX(var(--rotateY));
 }
+
+.card3DContent {
+	transform: translateZ(50px);
+	text-shadow: 0px 0px 2px #000000;
+}
+
+
 --Adapted from youtube https://www.youtube.com/watch?v=NCp6Z3XF68U
