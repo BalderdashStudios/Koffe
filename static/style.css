@@ -17,7 +17,7 @@ body {
 
 .3DViewer {
 	min-width: 100px;
-	max-width: 300px;
+	max-width: 130px;
 }
 
 .image {
@@ -33,8 +33,6 @@ body {
 .listItem {
 	border-radius: 5px;
 	background-color: #2C3220;
-	padding: 10px;
-	margin: 10px;
 }
 
 ul {
