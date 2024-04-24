@@ -227,11 +227,17 @@ def render_page3():
 def render_graph():
     country = request.args.get('country')
     countrys = get_countrys("Location","Country")
-    return render_template('page3.html',Country_options=countrys,selected_country=country,points=format_dict_as_graph_points(get_bean_scoreGraph(country)))
+    return render_template('page3.html',Country_options2=countrys,selected_country=country)
 
-@app.route("/countrysGraph")
-def render_graph():
-    return render_template('page3.html',points=format_dict_as_graph_points(get_bean_scoreGraph(country)))
+@app.route("/showGraph")
+def render_graphMultiCountry():
+    country = request.args.get('selectedCountry')
+    country2 = request.args.get('country')
+    
+    
+    return render_template('page3.html',Country_name=country,Country_name2=country2,points=format_dict_as_graph_points(get_bean_scoreGraph(country)), points2=format_dict_as_graph_points(get_bean_scoreGraph(country2)))
+
+
 def format_dict_as_graph_points(scores):
     graph_points = ""
     for key in scores:
