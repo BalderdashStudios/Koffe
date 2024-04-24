@@ -227,7 +227,7 @@ def render_page3():
 def render_graph():
     country = request.args.get('country')
     countrys = get_countrys("Location","Country")
-    return render_template('page3.html',Country_options2=countrys,selected_country=country)
+    return render_template('page3.html',Country_options2=countrys,selected_country=country, Country_name=country)
 
 @app.route("/showGraph")
 def render_graphMultiCountry():
