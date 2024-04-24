@@ -17,11 +17,25 @@
 				},
 				data: [{        
 					type: "line",
+					name: "{{Country_name}}",
+					showInLegend: true,
 					indexLabelFontSize: 16,
 					dataPoints: [
 						{{points}}
 					]
-				}]
+				},
+				{        
+					type: "line",
+					name: "{{Country_name2}}",
+					showInLegend: true,
+					indexLabelFontSize: 16,
+					dataPoints: [
+						{{points2}}
+					]
+				},
+				
+				]
+				
 			});
 			chart.render();
 
@@ -34,20 +48,34 @@
 {% block content %}
 	<div class="container mt-5 centerText">
 		<div class="row">
-			{% if Country_options %}
 			<h1 class="fadeup">See the total average score for coffee beans over time,</h1>
 			<br>
-			<h2 class="fadeup p-5">Select a country:</h2>
+			{% if Country_options %}
+				<h2 class="fadeup p-5">Select a country:</h2>
+				<div class="col fadedown">
+						 <form action="/countrysGraph">
+							  <select name="country"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
+								{{ Country_options }}
+							  </select>
+							  <br><br>
+							  <input type="submit" value="Select Country.">
+						 </form>
+				</div>
+			{% endif %}
+			{% if selected_country %}
+			<h2 class="fadeup p-5">Select a country to compare to:</h2>
 			<div class="col fadedown">
-					 <form action="/countrysGraph">
+					 <form action="/showGraph">
 						  <select name="country"> <!-- add onchange="this.form.submit()" to submit/update the form when an option is selected.  Usefull for then displaying county options. -->
-							{{ Country_options }}
+							{{ Country_options2 }}
 						  </select>
+						  <input type="hidden" id="selectedCountry" name="selectedCountry" value="{{ selected_country }}">
 						  <br><br>
 						  <input type="submit" value="Select Country.">
 					 </form>
 			</div>
-			{%else%}
+			{%endif%}
+			{% if points %}
 			<div class="col fadeup">
 				<h1>Here are the average scores over time for that country:</h1>
 				<br>
